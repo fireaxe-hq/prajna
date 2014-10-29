@@ -1,4 +1,4 @@
-paramita
+prajna
 ========
 
 linux system debug system

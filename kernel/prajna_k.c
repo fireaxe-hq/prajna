@@ -1,4 +1,4 @@
-#include "../include/bifs.h"
+#include "prajna_k.h"
 
 #define MYDEV_NAME "myDev"
 #define NAME_MAX_LEN 20
