@@ -1,4 +1,5 @@
 #include "prajna_k.h"
+#include "../include/prajna.h"
 
 #define MYDEV_NAME "myDev"
 #define NAME_MAX_LEN 20
@@ -10,36 +11,6 @@ struct USR_CMD {
 
 static struct device *my_dev;
 
-#if 0
-int CmdParser(struct USR_CMD *cmd, int argc, char *argv[])
-{
-	ssize_t size;
-	int i;
-
-	if (argc < 2) {
-		printf("too few para:%d\n", argc);
-		return (-1);
-	}
-	if (argc > 6) {
-		printf("too many para:%d\n", argc);
-		return (-1);
-	}
-
-	memset(cmd, 0, sizeof(struct USR_CMD));
-	strcpy(cmd->name, argv[1]);
-
-	for (i = 2; i < argc; i++) {
-		if (('0' == *(argv[i])) && ('x' == *(argv[i]+1))) {
-			// hex parse
-			sscanf(argv[i], "0x%x", &cmd->para[i-2]);
-		} else if ('"' == *(argv[i])) {
-			// string parse
-		} else {
-			cmd->para[i-2] = atoi(argv[i]);
-		}
-	}
-}
-#endif
 
 static void memdump(u32 para[4])
 {
@@ -47,6 +18,7 @@ static void memdump(u32 para[4])
 	char *base;
 	u32 size = para[1];
 
+	printk(KERN_INFO" memdump %x, %x\n", para[0], para[1]);
 	base = (char*)ioremap(para[0], size);
 
 	for (i = 0; i < size; i++) {
@@ -85,19 +57,19 @@ static ssize_t myDev_write(struct file *f, const char __user *addr, size_t size,
 
 	// get cmd from user space to kernel space;
 	copy_from_user((char*)&cmd, addr, sizeof(struct USR_CMD));
-	printk(KERN_INFO"show command: %s", cmd.name);
+	printk(KERN_INFO"prajna_k: show command: %s-%d\n", cmd.name, sizeof(cmd.name));
 
 	// get function ptr by name;
-	for (i = 0; cmdList[i].ptr == NULL; i++) {
+	for (i = 0; cmdList[i].ptr != NULL; i++) {
 		if (0 == strcmp(cmd.name, cmdList[i].name)) {
 			ptr = cmdList[i].ptr;
 			break;
 		}
 	}
 
-	if (NULL != cmdList[i].ptr) {
-		printk(KERN_ERR"error command: %s", cmd.name);
-		return (-1);
+	if (NULL == cmdList[i].ptr) {
+		printk(KERN_ERR"prajna_k: error command: %s", cmd.name);
+		return (ERR_CMD_INVALID);
 	}
 
 	// run function ptr;
@@ -122,7 +94,12 @@ struct cdev *dev;
 
 static int __init my_init(void)
 {
-
+	dev_t devNum;
+	if (alloc_chrdev_region(&devNum, 0, 1, "prajna_k")) {
+		printk(KERN_ERR"allocate device number failed\n");
+		return -1;
+	}
+	
 	dev = cdev_alloc();
 	if (dev == NULL) {
 		printk(KERN_ERR"error create device\n");
@@ -131,7 +108,7 @@ static int __init my_init(void)
 
 	cdev_init(dev, &myDev_fops);
 
-	if (0 > cdev_add(dev, 12, 1)) {
+	if (0 > cdev_add(dev, devNum, 1)) {
 		printk(KERN_ERR"error init device\n");
 		return -1;
 	}
@@ -142,6 +119,7 @@ static int __init my_init(void)
 static void __exit my_exit(void)
 {
 	cdev_del(dev);
+	unregister_chrdev_region(MKDEV(12,1), 1);
 }
 
 module_init(my_init);

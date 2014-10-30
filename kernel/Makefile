@@ -13,7 +13,7 @@ modules_install:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) modules_install
 
 install:
-	@echo Do nothing
+	cp -f *.ko /home/hao1404/Desktop/arm/qemu_img/
 
 kernel_clean:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) clean
