@@ -1,3 +1,7 @@
 tags
 .config
+cscope.*
+configure.scan
+autoscan.log
+autom4te.cache/*
 

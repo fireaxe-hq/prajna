@@ -11,13 +11,6 @@ struct USR_CMD {
 	unsigned long para[8];
 };
 
-int CmdParser(struct USR_CMD *cmd, int argc, char *argv[])
-{
-	ssize_t size;
-	int i;
-
-}
-
 int main(int argc, char**argv)
 {
 	int fd, i;

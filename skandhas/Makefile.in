@@ -90,7 +90,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_skandhas_OBJECTS = skandhas-skandhas.$(OBJEXT)
+am_skandhas_OBJECTS = skandhas-skandhas.$(OBJEXT) \
+	skandhas-test01.$(OBJEXT)
 skandhas_OBJECTS = $(am_skandhas_OBJECTS)
 skandhas_LDADD = $(LDADD)
 skandhas_LINK = $(CCLD) $(skandhas_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -164,6 +165,7 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
@@ -171,7 +173,9 @@ DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
+EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -240,8 +244,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
-skandhas_SOURCES = skandhas.c
-skandhas_CFLAGS = -I../include
+skandhas_SOURCES = skandhas.c test01.c
+skandhas_CFLAGS = -g -O0 -I../include
 all: all-am
 
 .SUFFIXES:
@@ -330,6 +334,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/skandhas-skandhas.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/skandhas-test01.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -358,6 +363,20 @@ skandhas-skandhas.obj: skandhas.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='skandhas.c' object='skandhas-skandhas.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-skandhas.obj `if test -f 'skandhas.c'; then $(CYGPATH_W) 'skandhas.c'; else $(CYGPATH_W) '$(srcdir)/skandhas.c'; fi`
+
+skandhas-test01.o: test01.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-test01.o -MD -MP -MF $(DEPDIR)/skandhas-test01.Tpo -c -o skandhas-test01.o `test -f 'test01.c' || echo '$(srcdir)/'`test01.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-test01.Tpo $(DEPDIR)/skandhas-test01.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test01.c' object='skandhas-test01.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-test01.o `test -f 'test01.c' || echo '$(srcdir)/'`test01.c
+
+skandhas-test01.obj: test01.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-test01.obj -MD -MP -MF $(DEPDIR)/skandhas-test01.Tpo -c -o skandhas-test01.obj `if test -f 'test01.c'; then $(CYGPATH_W) 'test01.c'; else $(CYGPATH_W) '$(srcdir)/test01.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-test01.Tpo $(DEPDIR)/skandhas-test01.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test01.c' object='skandhas-test01.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-test01.obj `if test -f 'test01.c'; then $(CYGPATH_W) 'test01.c'; else $(CYGPATH_W) '$(srcdir)/test01.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
