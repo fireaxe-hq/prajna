@@ -8,3 +8,5 @@
 #include <linux/cdev.h>
 #include <linux/io.h>
 
+#define ERR_CMD_INVALID 0x12340001
+

@@ -1,5 +1,5 @@
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = foreign subdir-objects
 bin_PROGRAMS = skandhas
-skandhas_SOURCES = skandhas.c test01.c
-skandhas_CFLAGS = -g -O0 -I../include
+skandhas_SOURCES = skandhas.c common.c exc/exc_info.c exc/exc_trigger.c
+skandhas_CFLAGS = -g -O0 -I../include -Iinclude
 

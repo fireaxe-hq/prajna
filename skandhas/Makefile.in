@@ -90,8 +90,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__dirstamp = $(am__leading_dot)dirstamp
 am_skandhas_OBJECTS = skandhas-skandhas.$(OBJEXT) \
-	skandhas-test01.$(OBJEXT)
+	skandhas-common.$(OBJEXT) exc/skandhas-exc_info.$(OBJEXT) \
+	exc/skandhas-exc_trigger.$(OBJEXT)
 skandhas_OBJECTS = $(am_skandhas_OBJECTS)
 skandhas_LDADD = $(LDADD)
 skandhas_LINK = $(CCLD) $(skandhas_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -243,9 +245,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AUTOMAKE_OPTIONS = foreign
-skandhas_SOURCES = skandhas.c test01.c
-skandhas_CFLAGS = -g -O0 -I../include
+AUTOMAKE_OPTIONS = foreign subdir-objects
+skandhas_SOURCES = skandhas.c common.c exc/exc_info.c exc/exc_trigger.c
+skandhas_CFLAGS = -g -O0 -I../include -Iinclude
 all: all-am
 
 .SUFFIXES:
@@ -322,6 +324,16 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+exc/$(am__dirstamp):
+	@$(MKDIR_P) exc
+	@: > exc/$(am__dirstamp)
+exc/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) exc/$(DEPDIR)
+	@: > exc/$(DEPDIR)/$(am__dirstamp)
+exc/skandhas-exc_info.$(OBJEXT): exc/$(am__dirstamp) \
+	exc/$(DEPDIR)/$(am__dirstamp)
+exc/skandhas-exc_trigger.$(OBJEXT): exc/$(am__dirstamp) \
+	exc/$(DEPDIR)/$(am__dirstamp)
 
 skandhas$(EXEEXT): $(skandhas_OBJECTS) $(skandhas_DEPENDENCIES) $(EXTRA_skandhas_DEPENDENCIES) 
 	@rm -f skandhas$(EXEEXT)
@@ -329,23 +341,28 @@ skandhas$(EXEEXT): $(skandhas_OBJECTS) $(skandhas_DEPENDENCIES) $(EXTRA_skandhas
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f exc/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/skandhas-common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/skandhas-skandhas.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/skandhas-test01.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@exc/$(DEPDIR)/skandhas-exc_info.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@exc/$(DEPDIR)/skandhas-exc_trigger.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
@@ -364,19 +381,47 @@ skandhas-skandhas.obj: skandhas.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-skandhas.obj `if test -f 'skandhas.c'; then $(CYGPATH_W) 'skandhas.c'; else $(CYGPATH_W) '$(srcdir)/skandhas.c'; fi`
 
-skandhas-test01.o: test01.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-test01.o -MD -MP -MF $(DEPDIR)/skandhas-test01.Tpo -c -o skandhas-test01.o `test -f 'test01.c' || echo '$(srcdir)/'`test01.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-test01.Tpo $(DEPDIR)/skandhas-test01.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test01.c' object='skandhas-test01.o' libtool=no @AMDEPBACKSLASH@
+skandhas-common.o: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-common.o -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='common.c' object='skandhas-common.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-test01.o `test -f 'test01.c' || echo '$(srcdir)/'`test01.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
 
-skandhas-test01.obj: test01.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-test01.obj -MD -MP -MF $(DEPDIR)/skandhas-test01.Tpo -c -o skandhas-test01.obj `if test -f 'test01.c'; then $(CYGPATH_W) 'test01.c'; else $(CYGPATH_W) '$(srcdir)/test01.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-test01.Tpo $(DEPDIR)/skandhas-test01.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test01.c' object='skandhas-test01.obj' libtool=no @AMDEPBACKSLASH@
+skandhas-common.obj: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-common.obj -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='common.c' object='skandhas-common.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-test01.obj `if test -f 'test01.c'; then $(CYGPATH_W) 'test01.c'; else $(CYGPATH_W) '$(srcdir)/test01.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+
+exc/skandhas-exc_info.o: exc/exc_info.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_info.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.c' || echo '$(srcdir)/'`exc/exc_info.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_info.c' object='exc/skandhas-exc_info.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.c' || echo '$(srcdir)/'`exc/exc_info.c
+
+exc/skandhas-exc_info.obj: exc/exc_info.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_info.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.c'; then $(CYGPATH_W) 'exc/exc_info.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_info.c' object='exc/skandhas-exc_info.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.c'; then $(CYGPATH_W) 'exc/exc_info.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.c'; fi`
+
+exc/skandhas-exc_trigger.o: exc/exc_trigger.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_trigger.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.c' || echo '$(srcdir)/'`exc/exc_trigger.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_trigger.c' object='exc/skandhas-exc_trigger.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.c' || echo '$(srcdir)/'`exc/exc_trigger.c
+
+exc/skandhas-exc_trigger.obj: exc/exc_trigger.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_trigger.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.c'; then $(CYGPATH_W) 'exc/exc_trigger.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_trigger.c' object='exc/skandhas-exc_trigger.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.c'; then $(CYGPATH_W) 'exc/exc_trigger.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -493,6 +538,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f exc/$(DEPDIR)/$(am__dirstamp)
+	-rm -f exc/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -502,7 +549,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) exc/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -548,7 +595,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) exc/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

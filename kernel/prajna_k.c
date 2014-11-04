@@ -1,5 +1,4 @@
 #include "prajna_k.h"
-#include "../include/prajna.h"
 
 #define MYDEV_NAME "myDev"
 #define NAME_MAX_LEN 20
@@ -8,9 +7,6 @@ struct USR_CMD {
 	char name[NAME_MAX_LEN];
 	u32 para[8];
 };
-
-static struct device *my_dev;
-
 
 static void memdump(u32 para[4])
 {
@@ -33,7 +29,7 @@ static void memdump(u32 para[4])
 	iounmap(base);
 }
 
-static ssize_t myDev_read(struct file *f, const char __user *addr, size_t size, loff_t *off)
+static ssize_t myDev_read(struct file *f, char __user *addr, size_t size, loff_t *off)
 {
 
 	return 0;
@@ -56,7 +52,8 @@ static ssize_t myDev_write(struct file *f, const char __user *addr, size_t size,
 	int i;
 
 	// get cmd from user space to kernel space;
-	copy_from_user((char*)&cmd, addr, sizeof(struct USR_CMD));
+	if (0 != copy_from_user((char*)&cmd, addr, sizeof(struct USR_CMD)))
+		return -123;
 	printk(KERN_INFO"prajna_k: show command: %s-%d\n", cmd.name, sizeof(cmd.name));
 
 	// get function ptr by name;
