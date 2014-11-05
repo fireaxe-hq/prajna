@@ -15,6 +15,11 @@ static char *short_opts = "he:d";
 void help_info(void)
 {
 	printf("help info:\n");
+	printf("Usage: skandha -e err_type [-d]\n");
+	printf("Trigger different kinds of errors, and show debug information if '-d' is used.\n");
+	printf("\nerr_type:\n");
+	printf("  data          address access exception\n");
+	printf("  program       program invalid exception\n");
 }
 
 int main(int argc, char**argv)
@@ -25,7 +30,7 @@ int main(int argc, char**argv)
 	char get_para = 0;
 
 	if (argc < 2) {
-		printf("Please input a parameter.\n");
+		printf("Please input a parameter...\n");
 		help_info();
 		return -11;
 	}
@@ -53,17 +58,17 @@ int main(int argc, char**argv)
 
 	if (dbg_enable == 1) { 
 		if ((0 == strcmp(err_type, "data")) || 
-			(0 == strcmp(err_type, "text"))) {
+			(0 == strcmp(err_type, "program"))) {
 			exc_install(err_type[0]);
 		}
 	}
 
 	if (0 == strcmp(err_type, "data")) {
 	   trig_exc_mem();
-	} else if (0 == strcmp(err_type, "text")) {
+	} else if (0 == strcmp(err_type, "program")) {
 		trig_exc_text();
 	} else {
-		printf("Unknown error err_type.\n");
+		printf("Unknown error err_type...\n");
 		help_info();
 		return -44;
 	}
