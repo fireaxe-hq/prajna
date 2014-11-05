@@ -1,62 +1,73 @@
 #include "prajna.h"
+#include <getopt.h>
 #include "include/exc_info.h"
 #include "include/exc_trigger.h"
 
-int ab02=1;
+static struct option long_options[] = {
+	{"help", no_argument, NULL, 'h'}, 
+	{"error", required_argument, NULL, 'e'}, 
+	{"debug", no_argument, NULL, 'd'}, 
+	{NULL, 0, NULL, 0}
+};
 
-extern void abc(int c);
+static char *short_opts = "he:d";
 
-void ab2(int c2)
+void help_info(void)
 {
-	memset(0x0b, 0, 10);
+	printf("help info:\n");
 }
 
 int main(int argc, char**argv)
 {
-	if (argc != 2) {
-		printf("Please input a bug type.\n");
+	int opt;
+	char err_type[50];
+	char dbg_enable = 0;
+	char get_para = 0;
+
+	if (argc < 2) {
+		printf("Please input a parameter.\n");
+		help_info();
 		return -11;
 	}
 
-	if (argv[1][1] != 0) { 
-		if (argv[1][1] == 'd') {
-			switch (argv[1][0]) {
-				case 'd':
-				case 't':
-				{
-					exc_install(argv[1][0]);
-					break;
-				}
-				default:
-					break;
-			}
-		} else {
-			printf("unknown debug type\n");
-			exit -22;
+	while ((opt = getopt_long(argc, argv, short_opts, long_options, NULL)) != -1) {
+		switch (opt) {
+			case 'h':
+				help_info();
+				return 0;
+			case 'e':
+				strcpy(err_type, optarg);
+				break;
+			case 'd':
+				dbg_enable = 1;
+				break;
+		}
+		get_para = 1;
+	}
+
+	if (get_para == 0) {
+		printf("Please input invalide parameter...\n");
+		help_info();
+		return -22;
+	}
+
+	if (dbg_enable == 1) { 
+		if ((0 == strcmp(err_type, "data")) || 
+			(0 == strcmp(err_type, "text"))) {
+			exc_install(err_type[0]);
 		}
 	}
 
-	switch (argv[1][0])
-	{
-		case 'd':
-		{
-			abc(ab02);
-			break;
-		}
-		case 't':
-		{
-			void (*q)(int);
-
-			q = NULL;
-			q(1);
-			break;
-		}
-		default:
-			perror("unknown bug type\n");
-			return -33;
+	if (0 == strcmp(err_type, "data")) {
+	   trig_exc_mem();
+	} else if (0 == strcmp(err_type, "text")) {
+		trig_exc_text();
+	} else {
+		printf("Unknown error err_type.\n");
+		help_info();
+		return -44;
 	}
-			
-	printf("Hello, autoconfig.\n");
+
 	return 0;
 }
 

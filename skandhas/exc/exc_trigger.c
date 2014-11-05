@@ -1,15 +1,30 @@
 #include "prajna.h"
 #include "exc_trigger.h"
 
-extern ab02;
-void (*p)(int);
+static int ab02=1;
+static void (*p)(int);
 
-extern void ab2(int c2);
+static void ab2(int c2)
+{
+	memset(0x0b, 0, 10);
+}
 
-void abc(int c)
+static void abc(int c)
 {
 	p = ab2;
 	p(c+2);
 }
 
+void trig_exc_mem(void)
+{
+	abc(ab02);
+}
+
+void trig_exc_text(void)
+{
+	void (*q)(int);
+
+	q = NULL;
+	q(1);
+}
 

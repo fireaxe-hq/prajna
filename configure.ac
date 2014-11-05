@@ -7,7 +7,6 @@ AM_INIT_AUTOMAKE(foreign)
 
 # Checks for programs.
 AC_PROG_CC
-AC_CONFIG_SUBDIRS([paramita skandhas])
 
 # Checks for libraries.
 
