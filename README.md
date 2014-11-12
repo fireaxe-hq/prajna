@@ -1,14 +1,12 @@
 prajna
 ================================================
-Author: Marco hao
-Email:  fireaxe.hq@outlook.com
-Blog: [fireaxe.hq@outlook.com](fireaxe.hq@outlook.com)
 
 #Content
 ##1. Introduction
 ##2. kernel
 ##3. paramiter
 ##4. skandhas
+
 
 #1. Introduction
 This software is planned to show how to fix debugs and find useful information in Linux system.
@@ -25,3 +23,6 @@ THis module will produce a kernel module which includes all functions which are 
 #5. enable_prajna.sh
 This script file is used to enable all functions of this software.
 
+Author: Marco hao
+Email:  fireaxe.hq@outlook.com
+Blog: [fireaxe.hq@outlook.com](fireaxe.hq@outlook.com)
