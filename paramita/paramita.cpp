@@ -1,8 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <string.h>
 #include "prajna.h"
+#include <getopt.h>
+
+using namespace std;
 
 #define NAME_MAX_LEN 20
 
@@ -11,6 +10,15 @@ struct USR_CMD {
 	unsigned long para[8];
 };
 
+static void help_info(void)
+{
+	printf("help info:\n");
+	printf("Usage: paramita <cmd>\n");
+	printf("execute cmd.\n");
+	printf("\ncommand type:\n");
+	printf("  dm base size\n");
+}
+
 int main(int argc, char**argv)
 {
 	int fd, i;
@@ -18,17 +26,19 @@ int main(int argc, char**argv)
 	unsigned long ret;
 
 	if (argc < 2) {
-		printf("too few para:%d\n", argc);
+		cout<<"too few para:"<<argc<<endl;
+		help_info();
 		return (-1);
 	}
 	if (argc > 6) {
-		printf("too many para:%d\n", argc);
+		cout<<"too many para:"<<argc<<endl;
+		help_info();
 		return (-1);
 	}
 
 	fd = open("/dev/prajna_k", O_RDWR);
 	if (fd == -1) {
-		perror("error open\n");
+		printf("error open\n");
 		exit (-2);
 	}
 
@@ -48,7 +58,8 @@ int main(int argc, char**argv)
 
 	ret = write(fd, &cmd, sizeof(cmd));
 	if (ERR_CMD_INVALID == ret) {
-		perror("cmd is invalid!\n");
+		printf("cmd is invalid!\n");
+		help_info();
 		exit (-3);
 	}
 	
