@@ -24,5 +24,8 @@ THis module will produce a kernel module which includes all functions which are 
 This script file is used to enable all functions of this software.
 
 Author: Marco hao
+
 Email:  fireaxe.hq@outlook.com
+
 Blog: [fireaxe.hq@outlook.com](fireaxe.hq@outlook.com)
+
