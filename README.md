@@ -4,14 +4,14 @@ Author: Marco hao
 Email:  fireaxe.hq@outlook.com
 Version: v0.01
 
-================================================
+-------------------------------------------------
 Content
 1. Introduction
 2. kernel
 3. paramiter
 4. skandhas
 
-================================================
+-------------------------------------------------
 Introduction
 1. Introduction
 This software is planned to show how to fix debugs and find useful information in Linux system.
