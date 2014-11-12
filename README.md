@@ -7,14 +7,6 @@ prajna
 >Blog: [fireaxe.blog.chinaunix.net](fireaxe.blog.chinaunix.net)
 
 
-
-#Content
-##1. Introduction
-##2. kernel
-##3. paramiter
-##4. skandhas
-
-
 #1. Introduction
 This software is planned to show how to fix debugs and find useful information in Linux system.
 
