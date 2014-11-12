@@ -6,7 +6,7 @@ AC_INIT(prajna, 0.01, fireaxe.hq@outlook.com)
 AM_INIT_AUTOMAKE(foreign)
 
 # Checks for programs.
-AC_PROG_CC
+AC_PROG_CXX
 
 # Checks for libraries.
 

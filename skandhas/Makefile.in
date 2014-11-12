@@ -96,8 +96,8 @@ am_skandhas_OBJECTS = skandhas-skandhas.$(OBJEXT) \
 	exc/skandhas-exc_trigger.$(OBJEXT)
 skandhas_OBJECTS = $(am_skandhas_OBJECTS)
 skandhas_LDADD = $(LDADD)
-skandhas_LINK = $(CCLD) $(skandhas_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+skandhas_LINK = $(CXXLD) $(skandhas_CXXFLAGS) $(CXXFLAGS) \
+	$(skandhas_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -118,18 +118,19 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_@AM_V@)
-am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_@AM_V@)
-am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_@AM_V@)
+am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
+am__v_CXX_0 = @echo "  CXX     " $@;
+am__v_CXX_1 = 
+CXXLD = $(CXX)
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
+AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+am__v_CXXLD_0 = @echo "  CXXLD   " $@;
+am__v_CXXLD_1 = 
 SOURCES = $(skandhas_SOURCES)
 DIST_SOURCES = $(skandhas_SOURCES)
 am__can_run_installinfo = \
@@ -169,6 +170,9 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -207,6 +211,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -245,12 +250,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign subdir-objects
-skandhas_SOURCES = skandhas.c common.c exc/exc_info.c exc/exc_trigger.c
+skandhas_SOURCES = skandhas.cpp common.cpp exc/exc_info.cpp exc/exc_trigger.cpp
 skandhas_CFLAGS = -g -O0 -I../include -Iinclude
+skandhas_CXXFLAGS = -g -O0 -I../include -Iinclude
+skandhas_LDFLAGS = -L/opt/mytoolchain/arm-qhao-linux-gnueabi/lib -lpthread
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
+.SUFFIXES: .cpp .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -336,7 +343,7 @@ exc/skandhas-exc_trigger.$(OBJEXT): exc/$(am__dirstamp) \
 
 skandhas$(EXEEXT): $(skandhas_OBJECTS) $(skandhas_DEPENDENCIES) $(EXTRA_skandhas_DEPENDENCIES) 
 	@rm -f skandhas$(EXEEXT)
-	$(AM_V_CCLD)$(skandhas_LINK) $(skandhas_OBJECTS) $(skandhas_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(skandhas_LINK) $(skandhas_OBJECTS) $(skandhas_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -350,77 +357,77 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@exc/$(DEPDIR)/skandhas-exc_info.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@exc/$(DEPDIR)/skandhas-exc_trigger.Po@am__quote@
 
-.c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
+.cpp.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
-.c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+.cpp.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-skandhas-skandhas.o: skandhas.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-skandhas.o -MD -MP -MF $(DEPDIR)/skandhas-skandhas.Tpo -c -o skandhas-skandhas.o `test -f 'skandhas.c' || echo '$(srcdir)/'`skandhas.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-skandhas.Tpo $(DEPDIR)/skandhas-skandhas.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='skandhas.c' object='skandhas-skandhas.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-skandhas.o `test -f 'skandhas.c' || echo '$(srcdir)/'`skandhas.c
+skandhas-skandhas.o: skandhas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT skandhas-skandhas.o -MD -MP -MF $(DEPDIR)/skandhas-skandhas.Tpo -c -o skandhas-skandhas.o `test -f 'skandhas.cpp' || echo '$(srcdir)/'`skandhas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-skandhas.Tpo $(DEPDIR)/skandhas-skandhas.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='skandhas.cpp' object='skandhas-skandhas.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o skandhas-skandhas.o `test -f 'skandhas.cpp' || echo '$(srcdir)/'`skandhas.cpp
 
-skandhas-skandhas.obj: skandhas.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-skandhas.obj -MD -MP -MF $(DEPDIR)/skandhas-skandhas.Tpo -c -o skandhas-skandhas.obj `if test -f 'skandhas.c'; then $(CYGPATH_W) 'skandhas.c'; else $(CYGPATH_W) '$(srcdir)/skandhas.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-skandhas.Tpo $(DEPDIR)/skandhas-skandhas.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='skandhas.c' object='skandhas-skandhas.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-skandhas.obj `if test -f 'skandhas.c'; then $(CYGPATH_W) 'skandhas.c'; else $(CYGPATH_W) '$(srcdir)/skandhas.c'; fi`
+skandhas-skandhas.obj: skandhas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT skandhas-skandhas.obj -MD -MP -MF $(DEPDIR)/skandhas-skandhas.Tpo -c -o skandhas-skandhas.obj `if test -f 'skandhas.cpp'; then $(CYGPATH_W) 'skandhas.cpp'; else $(CYGPATH_W) '$(srcdir)/skandhas.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-skandhas.Tpo $(DEPDIR)/skandhas-skandhas.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='skandhas.cpp' object='skandhas-skandhas.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o skandhas-skandhas.obj `if test -f 'skandhas.cpp'; then $(CYGPATH_W) 'skandhas.cpp'; else $(CYGPATH_W) '$(srcdir)/skandhas.cpp'; fi`
 
-skandhas-common.o: common.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-common.o -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='common.c' object='skandhas-common.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+skandhas-common.o: common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT skandhas-common.o -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='common.cpp' object='skandhas-common.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o skandhas-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
 
-skandhas-common.obj: common.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT skandhas-common.obj -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='common.c' object='skandhas-common.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o skandhas-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+skandhas-common.obj: common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT skandhas-common.obj -MD -MP -MF $(DEPDIR)/skandhas-common.Tpo -c -o skandhas-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/skandhas-common.Tpo $(DEPDIR)/skandhas-common.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='common.cpp' object='skandhas-common.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o skandhas-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
 
-exc/skandhas-exc_info.o: exc/exc_info.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_info.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.c' || echo '$(srcdir)/'`exc/exc_info.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_info.c' object='exc/skandhas-exc_info.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.c' || echo '$(srcdir)/'`exc/exc_info.c
+exc/skandhas-exc_info.o: exc/exc_info.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT exc/skandhas-exc_info.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.cpp' || echo '$(srcdir)/'`exc/exc_info.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='exc/exc_info.cpp' object='exc/skandhas-exc_info.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o exc/skandhas-exc_info.o `test -f 'exc/exc_info.cpp' || echo '$(srcdir)/'`exc/exc_info.cpp
 
-exc/skandhas-exc_info.obj: exc/exc_info.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_info.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.c'; then $(CYGPATH_W) 'exc/exc_info.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_info.c' object='exc/skandhas-exc_info.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.c'; then $(CYGPATH_W) 'exc/exc_info.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.c'; fi`
+exc/skandhas-exc_info.obj: exc/exc_info.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT exc/skandhas-exc_info.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_info.Tpo -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.cpp'; then $(CYGPATH_W) 'exc/exc_info.cpp'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_info.Tpo exc/$(DEPDIR)/skandhas-exc_info.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='exc/exc_info.cpp' object='exc/skandhas-exc_info.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o exc/skandhas-exc_info.obj `if test -f 'exc/exc_info.cpp'; then $(CYGPATH_W) 'exc/exc_info.cpp'; else $(CYGPATH_W) '$(srcdir)/exc/exc_info.cpp'; fi`
 
-exc/skandhas-exc_trigger.o: exc/exc_trigger.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_trigger.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.c' || echo '$(srcdir)/'`exc/exc_trigger.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_trigger.c' object='exc/skandhas-exc_trigger.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.c' || echo '$(srcdir)/'`exc/exc_trigger.c
+exc/skandhas-exc_trigger.o: exc/exc_trigger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT exc/skandhas-exc_trigger.o -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.cpp' || echo '$(srcdir)/'`exc/exc_trigger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='exc/exc_trigger.cpp' object='exc/skandhas-exc_trigger.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o exc/skandhas-exc_trigger.o `test -f 'exc/exc_trigger.cpp' || echo '$(srcdir)/'`exc/exc_trigger.cpp
 
-exc/skandhas-exc_trigger.obj: exc/exc_trigger.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -MT exc/skandhas-exc_trigger.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.c'; then $(CYGPATH_W) 'exc/exc_trigger.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='exc/exc_trigger.c' object='exc/skandhas-exc_trigger.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CFLAGS) $(CFLAGS) -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.c'; then $(CYGPATH_W) 'exc/exc_trigger.c'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.c'; fi`
+exc/skandhas-exc_trigger.obj: exc/exc_trigger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -MT exc/skandhas-exc_trigger.obj -MD -MP -MF exc/$(DEPDIR)/skandhas-exc_trigger.Tpo -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.cpp'; then $(CYGPATH_W) 'exc/exc_trigger.cpp'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) exc/$(DEPDIR)/skandhas-exc_trigger.Tpo exc/$(DEPDIR)/skandhas-exc_trigger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='exc/exc_trigger.cpp' object='exc/skandhas-exc_trigger.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(skandhas_CXXFLAGS) $(CXXFLAGS) -c -o exc/skandhas-exc_trigger.obj `if test -f 'exc/exc_trigger.cpp'; then $(CYGPATH_W) 'exc/exc_trigger.cpp'; else $(CYGPATH_W) '$(srcdir)/exc/exc_trigger.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
