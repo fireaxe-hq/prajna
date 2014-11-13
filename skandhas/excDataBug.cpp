@@ -1,5 +1,26 @@
+#include "prajna.h"
 #include "common.h"
-#include "exc_info.h"
+#include <execinfo.h>
+#include "excDataBug.h"
+
+static int ab02=1;
+static void (*p)(int);
+
+static void ab2(int c2)
+{
+	memset((void*)0x0b, 0, 10);
+}
+
+static void abc(int c)
+{
+	p = ab2;
+	p(c+2);
+}
+
+void ExcDataBug::trigger(void)
+{
+	abc(ab02);
+}
 
 static void exc_myHandle(int signo, siginfo_t *info, void *ptr)
 {
@@ -26,12 +47,22 @@ static void exc_myHandle(int signo, siginfo_t *info, void *ptr)
 	exit(signo);
 }
 
-void exc_install(char cmd)
+bool ExcDataBug::dbg_en(bool val)
 {
 	struct sigaction act;
 
-	act.sa_sigaction = exc_myHandle;
-	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGSEGV, &act, NULL);
+	if (val) {
+		act.sa_sigaction = exc_myHandle;
+		act.sa_flags = SA_SIGINFO;
+		sigaction(SIGSEGV, &act, NULL);
+	}
 }
+
+void ExcDataBug::help(void)
+{
+	printf("  data          address access exception\n");
+}
+
+bug_install(ExcDataBug)
+bug_unstall(ExcDataBug)
 

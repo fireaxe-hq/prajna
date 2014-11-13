@@ -14,6 +14,8 @@ modules_install:
 
 install:
 	cp -f *.ko /home/hao1404/Desktop/arm/qemu_img/
+dist:
+	@echo do nothin now
 
 kernel_clean:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) clean

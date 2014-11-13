@@ -1,4 +1,6 @@
+#include "prajna.h"
 #include "common.h"
+#include <execinfo.h>
 
 void dump_mem(unsigned char *base, unsigned long size)
 {
