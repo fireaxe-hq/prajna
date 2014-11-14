@@ -1,3 +1,8 @@
+/*! provide useful command to get info of system.
+ * USR_CMD is used to transfer command to kernel.
+ * use 'help' parameter to see what commands are supproted.
+ */
+
 #include "prajna.h"
 #include <getopt.h>
 
@@ -5,9 +10,10 @@ using namespace std;
 
 #define NAME_MAX_LEN 20
 
+/*! Transfer command from userspace to kernel. */
 struct USR_CMD {
-	char name[NAME_MAX_LEN];
-	unsigned long para[8];
+	char name[NAME_MAX_LEN]; /*!< the command */
+	unsigned long para[8]; /*!< parameters, maximum 8 parameters are available. */
 };
 
 static void help_info(void)
@@ -16,7 +22,7 @@ static void help_info(void)
 	printf("Usage: paramita <cmd>\n");
 	printf("execute cmd.\n");
 	printf("\ncommand type:\n");
-	printf("  dm base size\n");
+	printf("  md base size\n");
 }
 
 int main(int argc, char**argv)

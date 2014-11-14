@@ -5,4 +5,5 @@ configure.scan
 autoscan.log
 autom4te.cache/*
 prajna-*
+docs/*
 

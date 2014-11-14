@@ -1,3 +1,5 @@
+/** header file for the whole project */
+
 #ifndef PRAJNA_H
 #define PRAJNA_H
 

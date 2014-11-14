@@ -1,14 +1,10 @@
+/** prajna module
+ * this module shall be installed into kernel
+ */
+
 #include "prajna_k.h"
 
-#define MYDEV_NAME "myDev"
-#define NAME_MAX_LEN 20
-
-struct USR_CMD {
-	char name[NAME_MAX_LEN];
-	u32 para[8];
-};
-
-static void memdump(u32 para[4])
+static void memdump(u32 para[8])
 {
 	int i;
 	char *base;
@@ -35,19 +31,20 @@ static ssize_t myDev_read(struct file *f, char __user *addr, size_t size, loff_t
 	return 0;
 }
 
+/*! all commands and their respective handle functions are linked by this structure */
 struct CMD_LIST {
-	char *name;
-	void *ptr;
+	char *name; /*!< command name */
+	void *ptr; /*!< pointer to handler */
 };
 
 struct CMD_LIST cmdList[] = {
-	{"dm", memdump}, 
+	{"md", memdump}, 
 	{NULL, NULL}
 };
 
 static ssize_t myDev_write(struct file *f, const char __user *addr, size_t size, loff_t *off)
 {
-	void (*ptr)(u32 para[4]);
+	void (*ptr)(u32 para[8]);
 	struct USR_CMD cmd;
 	int i;
 

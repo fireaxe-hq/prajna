@@ -27,6 +27,11 @@ void dump_stackframe(unsigned long fp)
 	}
 
 	size = fp - *(unsigned long*)fp;
+	if (size > 0x200) {
+		dump_mem((unsigned char*)fp, 0x200);
+		return;
+	}
+		
 	dump_mem((unsigned char*)fp, size);
 
 	dump_stackframe((unsigned long)*(unsigned long*)fp);
