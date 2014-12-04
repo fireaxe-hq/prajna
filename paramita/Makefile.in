@@ -90,7 +90,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_paramita_OBJECTS = paramita-paramita.$(OBJEXT)
+am_paramita_OBJECTS = paramita-main.$(OBJEXT) \
+	paramita-paramita.$(OBJEXT) paramita-common.$(OBJEXT) \
+	paramita-appletBase.$(OBJEXT) paramita-mdApplet.$(OBJEXT)
 paramita_OBJECTS = $(am_paramita_OBJECTS)
 paramita_LDADD = $(LDADD)
 paramita_LINK = $(CXXLD) $(paramita_CXXFLAGS) $(CXXFLAGS) \
@@ -247,9 +249,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign subdir-objects
-paramita_SOURCES = paramita.cpp
-paramita_CFLAGS = -I../include
-paramita_CXXFLAGS = -I../include
+paramita_SOURCES = main.cpp paramita.cpp common.cpp appletBase.cpp mdApplet.cpp
+paramita_CXXFLAGS = -I../include -Iinc
 paramita_LDFLAGS = -L/opt/mytoolchain/arm-qhao-linux-gnueabi/lib -lpthread
 all: all-am
 
@@ -338,6 +339,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-appletBase.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-common.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-mdApplet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-paramita.Po@am__quote@
 
 .cpp.o:
@@ -356,6 +361,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
+paramita-main.o: main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-main.o -MD -MP -MF $(DEPDIR)/paramita-main.Tpo -c -o paramita-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-main.Tpo $(DEPDIR)/paramita-main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='paramita-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+
+paramita-main.obj: main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-main.obj -MD -MP -MF $(DEPDIR)/paramita-main.Tpo -c -o paramita-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-main.Tpo $(DEPDIR)/paramita-main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='paramita-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+
 paramita-paramita.o: paramita.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-paramita.o -MD -MP -MF $(DEPDIR)/paramita-paramita.Tpo -c -o paramita-paramita.o `test -f 'paramita.cpp' || echo '$(srcdir)/'`paramita.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-paramita.Tpo $(DEPDIR)/paramita-paramita.Po
@@ -369,6 +388,48 @@ paramita-paramita.obj: paramita.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='paramita.cpp' object='paramita-paramita.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-paramita.obj `if test -f 'paramita.cpp'; then $(CYGPATH_W) 'paramita.cpp'; else $(CYGPATH_W) '$(srcdir)/paramita.cpp'; fi`
+
+paramita-common.o: common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-common.o -MD -MP -MF $(DEPDIR)/paramita-common.Tpo -c -o paramita-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-common.Tpo $(DEPDIR)/paramita-common.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='common.cpp' object='paramita-common.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
+
+paramita-common.obj: common.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-common.obj -MD -MP -MF $(DEPDIR)/paramita-common.Tpo -c -o paramita-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-common.Tpo $(DEPDIR)/paramita-common.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='common.cpp' object='paramita-common.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
+
+paramita-appletBase.o: appletBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-appletBase.o -MD -MP -MF $(DEPDIR)/paramita-appletBase.Tpo -c -o paramita-appletBase.o `test -f 'appletBase.cpp' || echo '$(srcdir)/'`appletBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-appletBase.Tpo $(DEPDIR)/paramita-appletBase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='appletBase.cpp' object='paramita-appletBase.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-appletBase.o `test -f 'appletBase.cpp' || echo '$(srcdir)/'`appletBase.cpp
+
+paramita-appletBase.obj: appletBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-appletBase.obj -MD -MP -MF $(DEPDIR)/paramita-appletBase.Tpo -c -o paramita-appletBase.obj `if test -f 'appletBase.cpp'; then $(CYGPATH_W) 'appletBase.cpp'; else $(CYGPATH_W) '$(srcdir)/appletBase.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-appletBase.Tpo $(DEPDIR)/paramita-appletBase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='appletBase.cpp' object='paramita-appletBase.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-appletBase.obj `if test -f 'appletBase.cpp'; then $(CYGPATH_W) 'appletBase.cpp'; else $(CYGPATH_W) '$(srcdir)/appletBase.cpp'; fi`
+
+paramita-mdApplet.o: mdApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-mdApplet.o -MD -MP -MF $(DEPDIR)/paramita-mdApplet.Tpo -c -o paramita-mdApplet.o `test -f 'mdApplet.cpp' || echo '$(srcdir)/'`mdApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-mdApplet.Tpo $(DEPDIR)/paramita-mdApplet.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mdApplet.cpp' object='paramita-mdApplet.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-mdApplet.o `test -f 'mdApplet.cpp' || echo '$(srcdir)/'`mdApplet.cpp
+
+paramita-mdApplet.obj: mdApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-mdApplet.obj -MD -MP -MF $(DEPDIR)/paramita-mdApplet.Tpo -c -o paramita-mdApplet.obj `if test -f 'mdApplet.cpp'; then $(CYGPATH_W) 'mdApplet.cpp'; else $(CYGPATH_W) '$(srcdir)/mdApplet.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-mdApplet.Tpo $(DEPDIR)/paramita-mdApplet.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mdApplet.cpp' object='paramita-mdApplet.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-mdApplet.obj `if test -f 'mdApplet.cpp'; then $(CYGPATH_W) 'mdApplet.cpp'; else $(CYGPATH_W) '$(srcdir)/mdApplet.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

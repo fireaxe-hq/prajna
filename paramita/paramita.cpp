@@ -1,75 +1,63 @@
-/*! provide useful command to get info of system.
- * USR_CMD is used to transfer command to kernel.
- * use 'help' parameter to see what commands are supproted.
- */
-
 #include "prajna.h"
-#include <getopt.h>
+#include "paramita.h"
 
-using namespace std;
-
-#define NAME_MAX_LEN 20
-
-/*! Transfer command from userspace to kernel. */
-struct USR_CMD {
-	char name[NAME_MAX_LEN]; /*!< the command */
-	unsigned long para[8]; /*!< parameters, maximum 8 parameters are available. */
-};
-
-static void help_info(void)
+Paramita::Paramita()
 {
-	printf("help info:\n");
-	printf("Usage: paramita <cmd>\n");
-	printf("execute cmd.\n");
-	printf("\ncommand type:\n");
-	printf("  md base size\n");
+	this->applets.clear();
 }
 
-int main(int argc, char**argv)
+void Paramita::add(AppletBase* applet)
 {
-	int fd, i;
-	struct USR_CMD cmd;
-	unsigned long ret;
+	this->applets.push_back(applet);
+}
 
-	if (argc < 2) {
-		cout<<"too few para:"<<argc<<endl;
-		help_info();
-		return (-1);
-	}
-	if (argc > 6) {
-		cout<<"too many para:"<<argc<<endl;
-		help_info();
-		return (-1);
-	}
-
-	fd = open("/dev/prajna_k", O_RDWR);
-	if (fd == -1) {
-		printf("error open\n");
-		exit (-2);
-	}
-
-	memset(&cmd, 0, sizeof(struct USR_CMD));
-	strcpy(cmd.name, argv[1]);
-
-	for (i = 2; i < argc; i++) {
-		if (('0' == *(argv[i])) && ('x' == *(argv[i]+1))) {
-			// hex parse
-			sscanf(argv[i], "0x%x", &cmd.para[i-2]);
-		} else if ('"' == *(argv[i])) {
-			// string parse
-		} else {
-			cmd.para[i-2] = atoi(argv[i]);
+void Paramita::rm(string name)
+{
+	list <AppletBase*>::iterator it;
+#if 0
+	for (it = this->applets.begin(); it != this->applets.end(); it++ ) {
+		if (it->match(name)) {
+			this->applets.remove(*it->self());
+			delete(it->self());
 		}
 	}
+#endif
+}
 
-	ret = write(fd, &cmd, sizeof(cmd));
-	if (ERR_CMD_INVALID == ret) {
-		printf("cmd is invalid!\n");
-		help_info();
-		exit (-3);
+AppletBase* Paramita::get(string name)
+{
+	list <AppletBase*>::iterator it;
+
+	for (it = this->applets.begin(); it != this->applets.end(); it++ ) {
+		AppletBase *p = *it;
+		if (p->match(name))
+			return p;
 	}
-	
-	close(fd);
-	return 0;
+
+	return NULL;
+}
+
+void Paramita::help()
+{
+	list <AppletBase*>::iterator it;
+	int output_width = 80;
+	int len = 0;
+	bool first_applet = true;
+
+	printf("\nCurrently defined functions:\n");
+	for (it = this->applets.begin(); it != this->applets.end(); it++ ) {
+		AppletBase *p = *it;
+		if (!first_applet) {
+			printf(", ");
+			first_applet = false;
+		}
+		len += p->get_name().size() + 2;
+		if (len > output_width) {
+			printf("\n");
+			len = p->get_name().size() + 2;
+		}
+		printf("%s", p->get_name().c_str());
+	}
+	printf("\n");
 }
 

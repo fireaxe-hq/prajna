@@ -33,7 +33,7 @@ BugBase* Skandhas::get(string name)
 		if (p->match(name))
 			return p;
 	}
-	
+
 	return NULL;
 }
 

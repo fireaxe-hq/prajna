@@ -23,5 +23,6 @@ AC_TYPE_SSIZE_T
 
 # Checks for library functions.
 AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([strrchr])
 
 AC_OUTPUT([Makefile paramita/Makefile skandhas/Makefile]) 

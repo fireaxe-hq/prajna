@@ -1,5 +1,6 @@
 tags
 .config
+config.h.in~
 cscope.*
 configure.scan
 autoscan.log

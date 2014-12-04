@@ -1,8 +1,6 @@
 #include "prajna.h"
 #include <getopt.h>
 #include "skandhas.h"
-#include "excDataBug.h"
-#include "excProgramBug.h"
 
 static struct option long_options[] = {
 	{"help", no_argument, NULL, 'h'}, 
