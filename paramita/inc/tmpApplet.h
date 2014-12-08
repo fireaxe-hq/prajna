@@ -5,10 +5,10 @@
 #include "appletBase.h"
 
 /*! class */
-class TmpApplet : public BugBase {
+class tmpApplet : public BugBase {
 public:
 	/*! construct function */
-	TmpApplet():AppletBase("tmp") {}
+	tmpApplet():AppletBase("tmp") {}
 	/*! trigger tmp */
 	void trigger(void);
 	/*! show help */
