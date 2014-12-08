@@ -51,6 +51,7 @@ void Paramita::install(char *path)
 		newpath  += p->get_name();
 		symlink(oldpath.c_str(), newpath.c_str());
 	}
+	this->help();
 }
 
 void Paramita::help()
@@ -65,11 +66,13 @@ void Paramita::help()
 		AppletBase *p = *it;
 		if (!first_applet) {
 			printf(", ");
-			first_applet = false;
 		}
+		
+		first_applet = false;
 		len += p->get_name().size() + 2;
 		if (len > output_width) {
 			printf("\n");
+			first_applet = true;
 			len = p->get_name().size() + 2;
 		}
 		printf("%s", p->get_name().c_str());

@@ -3,16 +3,16 @@
 #include <execinfo.h>
 #include "tmpApplet.h"
 
-int tmpApplet::trigger(char argc, char **argv)
+int TmpApplet::trigger(char argc, char **argv)
 {
 	return 0
 }
 
-void tmpApplet::help(void)
+void TmpApplet::help(void)
 {
 	printf("  tmp       tmp info\n");
 }
 
-applet_install(tmpApplet)
-applet_unstall(tmpApplet)
+applet_install(TmpApplet)
+applet_unstall(TmpApplet)
 

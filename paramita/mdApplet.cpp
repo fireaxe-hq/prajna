@@ -48,10 +48,7 @@ int MdApplet::trigger(char argc, char **argv)
 void MdApplet::help(void)
 {
 	printf("help info:\n");
-	printf("Usage: paramita <cmd>\n");
-	printf("execute cmd.\n");
-	printf("\ncommand type:\n");
-	printf("  md base size\n");
+	printf("Usage: md <address> <size>\n");
 }
 
 applet_install(MdApplet)

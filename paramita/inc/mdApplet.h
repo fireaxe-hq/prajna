@@ -1,10 +1,9 @@
-/*! memory dump applet*/
 #ifndef MDAPPLET_H
 #define MDAPPLET_H
 
 #include "appletBase.h"
 
-/*! memory dump applet */
+/*! memory dump applet*/
 class MdApplet : public AppletBase {
 public:
 	/*! construct function */
