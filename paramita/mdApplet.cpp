@@ -23,7 +23,6 @@ int MdApplet::trigger(char argc, char **argv)
 
 	memset(&cmd, 0, sizeof(struct USR_CMD));
 	strcpy(cmd.name, this->get_name().c_str());
-
 	for (int i = 1; i < argc; i++) {
 		if (('0' == *(argv[i])) && ('x' == *(argv[i]+1))) {
 			// hex parse

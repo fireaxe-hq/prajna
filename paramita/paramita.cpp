@@ -4,6 +4,7 @@
 Paramita::Paramita()
 {
 	this->applets.clear();
+	this->name = "paramita";
 }
 
 void Paramita::add(AppletBase* applet)
@@ -35,6 +36,21 @@ AppletBase* Paramita::get(string name)
 	}
 
 	return NULL;
+}
+
+void Paramita::install(char *path)
+{
+	list <AppletBase*>::iterator it;
+	string oldpath(path);
+
+	oldpath += this->get_name();
+	for (it = this->applets.begin(); it != this->applets.end(); it++ ) {
+		AppletBase *p = *it;
+		string newpath(path);
+
+		newpath  += p->get_name();
+		symlink(oldpath.c_str(), newpath.c_str());
+	}
 }
 
 void Paramita::help()

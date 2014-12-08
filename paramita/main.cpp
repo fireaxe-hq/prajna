@@ -15,15 +15,26 @@ bool add_applet(void *applet)
 int main(int argc, char**argv)
 {
 	char *applet_name;
+	char *tail;
+	char path[128];
 	AppletBase *applet;
 
-	applet_name = argv[0];
-	if(applet_name[0] == '-')
-		applet_name++;
-	applet_name = strrchr(applet_name, '/');
-	applet_name++;
+	strncpy(path, argv[0], sizeof(path));
+	tail = strrchr(path, '/');
+	if (tail == NULL) {
+		applet_name = argv[0];
+		strcpy((char*)path, "./");
+	} else {
+		tail++;
+		applet_name = (char*)((unsigned int)argv[0] + (unsigned int)tail - (unsigned int)path);
+        *tail = 0;
+	}
 
-	if ((applet = paramita->get(applet_name)) != NULL) {
+	if ((argc == 2) && (applet_name == paramita->get_name()) && (0 == strcmp("install", argv[1]))) {
+		paramita->install((char*)&path);
+		cout<<"All applet installed"<<endl;
+	} 
+	else if ((applet = paramita->get(applet_name)) != NULL) {
 		if ((argc == 2) && (0 == strncmp(argv[1], "help", 5)))
 			applet->help();
 		else
