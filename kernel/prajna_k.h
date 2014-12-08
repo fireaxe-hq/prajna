@@ -19,7 +19,7 @@
 /*! Transfer command from userspace to kernel. */
 struct USR_CMD {
 	char name[NAME_MAX_LEN]; /*!< the command */
-	unsigned long para[8]; /*!< parameters, maximum 8 parameters are available. */
+	unsigned int para[8]; /*!< parameters, maximum 8 parameters are available. */
 };
 
 #endif /* PRAJNA_K_H */

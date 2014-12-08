@@ -9,19 +9,29 @@ static void memdump(u32 para[8])
 	int i;
 	char *base;
 	u32 size = para[1];
-
-	printk(KERN_INFO" memdump %x, %x\n", para[0], para[1]);
+	char buff[60];
+	
+	printk(KERN_INFO" memdump %x, %x", para[0], para[1]);
 	base = (char*)ioremap(para[0], size);
-
-	for (i = 0; i < size; i++) {
-		if ((i%4 == 0) && i)
-			printk(" ");
-		if (i%(4*4) == 0)
-			printk("\n%08x: ", (u32)(para[0] + i));
-		printk("%02x", *(base + i));
+	if (NULL == base) {
+		printk(KERN_ERR"the address 0x%08x is unaccessable.", para[0]);
+		return;
 	}
 
-	printk("\n");
+	for (buff[0] = 0, i = 0; i < size; i++) {
+		if (i%(4*4) == 0) {
+			if (i != 0)
+				printk(KERN_ALERT"%s\n", buff);
+			buff[0] = 0;
+			snprintf(buff, sizeof(buff) - 1, "%08x:",  (u32)(para[0] + i));
+		}
+		if (i%4 == 0)
+			snprintf(buff, sizeof(buff) - 1, "%s ", buff);
+
+		snprintf(buff, sizeof(buff) - 1, "%s%02x", buff, *(base + i));
+	}
+	printk(KERN_ALERT"\n");
+
 	iounmap(base);
 }
 
@@ -34,7 +44,7 @@ static ssize_t myDev_read(struct file *f, char __user *addr, size_t size, loff_t
 /*! all commands and their respective handle functions are linked by this structure */
 struct CMD_LIST {
 	char *name; /*!< command name */
-	void *ptr; /*!< pointer to handler */
+	void (*ptr)(u32 para[8]); /*!< pointer to handler */
 };
 
 struct CMD_LIST cmdList[] = {
@@ -51,7 +61,7 @@ static ssize_t myDev_write(struct file *f, const char __user *addr, size_t size,
 	// get cmd from user space to kernel space;
 	if (0 != copy_from_user((char*)&cmd, addr, sizeof(struct USR_CMD)))
 		return -123;
-	printk(KERN_INFO"prajna_k: show command: %s-%d\n", cmd.name, sizeof(cmd.name));
+	/*printk(KERN_INFO"prajna_k: show command: %s-%d", cmd.name, sizeof(cmd.name));*/
 
 	// get function ptr by name;
 	for (i = 0; cmdList[i].ptr != NULL; i++) {
@@ -90,20 +100,20 @@ static int __init my_init(void)
 {
 	dev_t devNum;
 	if (alloc_chrdev_region(&devNum, 0, 1, "prajna_k")) {
-		printk(KERN_ERR"allocate device number failed\n");
+		printk(KERN_ERR"allocate device number failed");
 		return -1;
 	}
 	
 	dev = cdev_alloc();
 	if (dev == NULL) {
-		printk(KERN_ERR"error create device\n");
+		printk(KERN_ERR"error create device");
 		return -1;
 	}
 
 	cdev_init(dev, &myDev_fops);
 
 	if (0 > cdev_add(dev, devNum, 1)) {
-		printk(KERN_ERR"error init device\n");
+		printk(KERN_ERR"error init device");
 		return -1;
 	}
 
