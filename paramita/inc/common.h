@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #include <signal.h>
+#include <dirent.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -40,5 +41,25 @@ bool add_applet(void *applet);
 	{ \
 	}
 
+/*! process status */
+typedef struct proc_sts_t {
+	DIR *dir;
+	char *argv0;
+	char *exe;
+	unsigned long vsz, rss;
+	unsigned long stime, utime;
+	unsigned long start_time;
+	unsigned int pid;
+	unsigned int ppid;
+	unsigned int pgid;
+	unsigned int sid;
+	unsigned int uid;
+	unsigned int gid;
+	unsigned int tty_major, tty_minor;
+	char state[4];
+	char comm[16];
+} proc_sts_t;
+
+extern proc_sts_t *proc_scan(proc_sts_t *sp);
 #endif /* COMMON_H */
 

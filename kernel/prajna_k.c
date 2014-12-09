@@ -48,7 +48,7 @@ struct CMD_LIST {
 };
 
 struct CMD_LIST cmdList[] = {
-	{"md", memdump}, 
+	{"p_md", memdump}, 
 	{NULL, NULL}
 };
 

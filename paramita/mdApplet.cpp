@@ -48,9 +48,9 @@ int MdApplet::trigger(char argc, char **argv)
 void MdApplet::help(void)
 {
 	printf("help info:\n");
-	printf("Usage: md <address> <size>\n");
+	printf("Usage: %s <address> <size>\n", this->get_name().c_str());
 }
 
-applet_install(MdApplet)
-applet_unstall(MdApplet)
+applet_install(MdApplet);
+applet_unstall(MdApplet);
 

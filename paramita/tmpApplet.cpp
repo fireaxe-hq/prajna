@@ -10,9 +10,9 @@ int TmpApplet::trigger(char argc, char **argv)
 
 void TmpApplet::help(void)
 {
-	printf("  tmp       tmp info\n");
+	printf("  %s       tmp info\n", this->get_name().c_str());
 }
 
-applet_install(TmpApplet)
-applet_unstall(TmpApplet)
+applet_install(TmpApplet);
+applet_unstall(TmpApplet);
 

@@ -3,7 +3,7 @@
 
 AppletBase::AppletBase(string name)
 {
-   this->name = name;
+   this->name = "p_" + name;
 }
 
 bool AppletBase::match(string str)
