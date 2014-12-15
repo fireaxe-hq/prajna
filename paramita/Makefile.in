@@ -93,7 +93,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_paramita_OBJECTS = paramita-main.$(OBJEXT) \
 	paramita-paramita.$(OBJEXT) paramita-common.$(OBJEXT) \
 	paramita-appletBase.$(OBJEXT) paramita-mdApplet.$(OBJEXT) \
-	paramita-psApplet.$(OBJEXT)
+	paramita-psApplet.$(OBJEXT) paramita-topApplet.$(OBJEXT)
 paramita_OBJECTS = $(am_paramita_OBJECTS)
 paramita_LDADD = $(LDADD)
 paramita_LINK = $(CXXLD) $(paramita_CXXFLAGS) $(CXXFLAGS) \
@@ -250,7 +250,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign subdir-objects
-paramita_SOURCES = main.cpp paramita.cpp common.cpp appletBase.cpp mdApplet.cpp psApplet.cpp
+paramita_SOURCES = main.cpp paramita.cpp common.cpp appletBase.cpp mdApplet.cpp psApplet.cpp topApplet.cpp
 paramita_CXXFLAGS = -I../include -Iinc
 paramita_LDFLAGS = -L/opt/mytoolchain/arm-qhao-linux-gnueabi/lib -lpthread
 all: all-am
@@ -346,6 +346,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-mdApplet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-paramita.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-psApplet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paramita-topApplet.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -446,6 +447,20 @@ paramita-psApplet.obj: psApplet.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='psApplet.cpp' object='paramita-psApplet.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-psApplet.obj `if test -f 'psApplet.cpp'; then $(CYGPATH_W) 'psApplet.cpp'; else $(CYGPATH_W) '$(srcdir)/psApplet.cpp'; fi`
+
+paramita-topApplet.o: topApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-topApplet.o -MD -MP -MF $(DEPDIR)/paramita-topApplet.Tpo -c -o paramita-topApplet.o `test -f 'topApplet.cpp' || echo '$(srcdir)/'`topApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-topApplet.Tpo $(DEPDIR)/paramita-topApplet.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='topApplet.cpp' object='paramita-topApplet.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-topApplet.o `test -f 'topApplet.cpp' || echo '$(srcdir)/'`topApplet.cpp
+
+paramita-topApplet.obj: topApplet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -MT paramita-topApplet.obj -MD -MP -MF $(DEPDIR)/paramita-topApplet.Tpo -c -o paramita-topApplet.obj `if test -f 'topApplet.cpp'; then $(CYGPATH_W) 'topApplet.cpp'; else $(CYGPATH_W) '$(srcdir)/topApplet.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/paramita-topApplet.Tpo $(DEPDIR)/paramita-topApplet.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='topApplet.cpp' object='paramita-topApplet.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(paramita_CXXFLAGS) $(CXXFLAGS) -c -o paramita-topApplet.obj `if test -f 'topApplet.cpp'; then $(CYGPATH_W) 'topApplet.cpp'; else $(CYGPATH_W) '$(srcdir)/topApplet.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

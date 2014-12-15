@@ -3,6 +3,10 @@
 
 #include <signal.h>
 #include <dirent.h>
+#include <iostream>
+#include <fstream>
+#include <termios.h>
+#include <poll.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -48,6 +52,7 @@ typedef struct proc_sts_t {
 	char *exe;
 	unsigned long vsz, rss;
 	unsigned long stime, utime;
+	unsigned long cstime, cutime;
 	unsigned long start_time;
 	unsigned int pid;
 	unsigned int ppid;
@@ -60,6 +65,20 @@ typedef struct proc_sts_t {
 	char comm[16];
 } proc_sts_t;
 
+typedef struct jiffy_counts_t {
+   unsigned long long user;
+   unsigned long long nice;
+   unsigned long long system;
+   unsigned long long idle;
+   unsigned long long iowait;
+   unsigned long long irq;
+   unsigned long long softirq;
+   unsigned long long steal;
+   unsigned long long guest;
+   unsigned long long guest_nice;
+} jiffy_counts_t;
+
 extern proc_sts_t *proc_scan(proc_sts_t *sp);
+extern int read_cpu_jiffy(int cpu_num, jiffy_counts_t *p_jif);
 #endif /* COMMON_H */
 

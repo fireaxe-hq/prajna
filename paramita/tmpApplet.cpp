@@ -5,7 +5,7 @@
 
 int TmpApplet::trigger(char argc, char **argv)
 {
-	return 0
+	return 0;
 }
 
 void TmpApplet::help(void)

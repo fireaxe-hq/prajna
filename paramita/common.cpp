@@ -35,6 +35,45 @@ static char *alloc_readlink(const char *path)
 	return link;
 }
 
+int read_cpu_jiffy(int cpu_num, jiffy_counts_t *p_jif)
+{
+	ifstream readfile;
+	string line;
+	int ret = 0;
+	char tmp_str[6] = "cpu";
+
+	readfile.open("/proc/stat", ios::in);
+	if (!readfile) {
+		printf("err: open stat file failed.\n");
+		return -1;
+	}
+
+	if (cpu_num != -1)
+		sprintf(tmp_str, "cpu%d", cpu_num);
+
+	while (1) {
+		if (!getline(readfile, line)) {
+			printf("err: reached tail of file.\n");
+			return -1;
+		}
+		if (0 == memcmp (line.c_str(), tmp_str, strlen(tmp_str)))
+			break;
+	}
+
+	readfile.close();
+
+	line.erase(0, line.find(" "));
+	while(' ' == line.c_str()[0])
+		line.erase(0, 1);
+
+	sscanf(line.c_str(), "%llu %llu %llu %llu %llu %llu %llu %llu %llu %llu", 
+		&p_jif->user, &p_jif->nice, &p_jif->system, &p_jif->idle, 
+		&p_jif->iowait, &p_jif->irq, &p_jif->softirq, &p_jif->steal, 
+		&p_jif->guest, &p_jif->guest_nice);
+
+	return ret;
+}
+
 proc_sts_t *proc_scan(proc_sts_t *sp)
 {
 	struct dirent *entry;
@@ -88,7 +127,7 @@ proc_sts_t *proc_scan(proc_sts_t *sp)
 				"%u %u %d %*s "        /* pgid, sid, tty, tpgid */
 				"%*s %*s %*s %*s %*s " /* flags, min_flt, cmin_flt, maj_flt, cmaj_flt */
 				"%lu %lu "             /* utime, stime */
-				"%*s %*s %*s "         /* cutime, cstime, priority */
+				"%lu %lu %*s "         /* cutime, cstime, priority */
 				"%ld "                 /* nice */
 				"%*s %*s "             /* timeout, it_real_value */
 				"%lu "                 /* start_time */
@@ -96,6 +135,7 @@ proc_sts_t *proc_scan(proc_sts_t *sp)
 				"%lu ",                 /* rss */
 				sp->state, &sp->ppid,
 				&sp->pgid, &sp->sid, &tty,
+				&sp->cutime, &sp->cstime,
 				&sp->utime, &sp->stime,
 				&tasknice,
 				&sp->start_time,

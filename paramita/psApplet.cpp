@@ -10,9 +10,12 @@ int PsApplet::trigger(char argc, char **argv)
 	char *endp;
 	char stime_str[6];
 	unsigned int sut;
+	unsigned int elapsed;
+	unsigned int cstime, cutime;
 
-	printf("pid    ppid   pgid   sid    uid    gid   sts   tty         TIME      "
-		"exe                         argv0            comm\n");
+	printf("pid    ppid   pgid   sid    uid    gid   sts   tty         "
+			"STIME    TIME     CSTIME     CTIME      "
+			"exe                         argv0            comm\n");
 
 	while ((p = proc_scan(p)) != NULL) {
 		if (p->tty_major == 136)
@@ -28,9 +31,18 @@ int PsApplet::trigger(char argc, char **argv)
 
 		sprintf(tty, "%s%d\t", tty, p->tty_minor);
 		sut = (p->stime + p->utime) / 100;
-		printf("%-6u %-6u %-6u %-6u %-6u %-6u %c    %-6s %02u:%02u:%02u %-28s %-16s %s\n", 
+		elapsed = (p->start_time) / 100;
+		cstime = (p->cstime) / 100;
+		cutime = (p->cutime) / 100;
+		printf("%-6u %-6u %-6u %-6u %-6u %-6u %c    %6s "
+				"%02u:%02u:%02u  %02u:%02u:%02u "
+				"%02u:%02u:%02u  %02u:%02u:%02u "
+				"%-028s %-016s %s\n", 
 				p->pid, p->ppid, p->pgid, p->sid, p->uid, p->gid, p->state[0], tty,  
+				elapsed / 3600, (elapsed %3600) / 60, elapsed % 60, 
 				sut / 3600, (sut % 3600) / 60, sut % 60, 
+				cstime / 3600, (cstime %3600) / 60, cstime % 60, 
+				cutime / 3600, (cutime %3600) / 60, cutime % 60, 
 				p->exe, p->comm, p->argv0);
 	}
 
