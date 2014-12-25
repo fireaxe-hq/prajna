@@ -26,7 +26,7 @@ int main(int argc, char**argv)
 		strcpy((char*)path, "./");
 	} else {
 		tail++;
-		applet_name = (char*)((unsigned int)argv[0] + (unsigned int)tail - (unsigned int)path);
+		applet_name = (char*)((unsigned long)argv[0] + (unsigned long)tail - (unsigned long)path);
         *tail = 0;
 	}
 
