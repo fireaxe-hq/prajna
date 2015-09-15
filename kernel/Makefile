@@ -2,7 +2,7 @@
 obj-m := prajna_k.o
 
 export KBUILD=../tmp
-export KROOT=~/Desktop/kernel/linux-3.12.17
+export KROOT=~/Desktop/kernel/linux-4.2
 
 all:modules
 
@@ -13,7 +13,7 @@ modules_install:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) modules_install
 
 install:
-	cp -f *.ko /home/hao-64/Desktop/arm/qemu_img/
+	cp -f *.ko /home/hao/Desktop/arm/qemu_img/
 dist:
 	@echo do nothin now
 
