@@ -13,7 +13,7 @@ modules_install:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) modules_install
 
 install:
-	cp -f *.ko /home/hao/Desktop/arm/qemu_img/
+	cp -f *.ko /home/haoqiang/Desktop/arm/zynq_qemu/
 dist:
 	@echo do nothin now
 
