@@ -2,7 +2,8 @@
 obj-m := prajna_k.o
 
 export KBUILD=../tmp
-export KROOT=~/Desktop/kernel/linux-4.2
+#export KROOT=~/Desktop/kernel/linux-4.2
+export KROOT=/home/vlx/linux-4.2
 
 all:modules
 
