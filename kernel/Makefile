@@ -2,10 +2,7 @@
 obj-m := prajna_k.o
 
 export KBUILD=../tmp
-#QEMU_BASE=/home/haoqiang/Desktop/arm
-QEMU_BASE=/home/qemu
-#export KROOT=~/Desktop/kernel/linux-4.2
-export KROOT=/home/vlx/linux-4.2
+export KROOT=~/Desktop/kernel/linux-4.10
 
 all:modules
 
@@ -16,7 +13,7 @@ modules_install:
 	@$(MAKE) -C $(KROOT) M=$(shell pwd) modules_install
 
 install:
-	cp -f *.ko $(QEMU_BASE)/zynq_qemu/
+	@echo do nothin now
 dist:
 	@echo do nothin now
 
