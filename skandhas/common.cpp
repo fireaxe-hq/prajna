@@ -10,7 +10,7 @@ void dump_mem(unsigned char *base, unsigned long size)
 		if ((i%4 == 0) && i)
 			printf(" ");
 		if (i%(4*4) == 0)
-			printf("\n%08x: ", (unsigned long)(base + i));
+			printf("\n%llx: ", (long long unsigned int)(base + i));
 		printf("%02x", *(base + i));
 	}
 
@@ -40,7 +40,28 @@ void dump_stackframe(unsigned long fp)
 void dump_register(struct sigcontext *pt_reg)
 {
 	printf("\nRegister context:\n");
-	printf(" Memory location which caused fault: %08x\n", pt_reg->fault_address);
+
+#if __aarch64__
+	printf(" Memory location which caused fault: %llx\n", pt_reg->fault_address);
+	printf(" Exception instruction: %llx\n", pt_reg->pc); 
+	printf(" Link register: %llx\n", pt_reg->regs[30]);
+	printf(" FP register: %llx\n", pt_reg->regs[29]);
+	printf(" pstate register: %llx\n", pt_reg->pstate);
+    {
+        int i;
+
+        for (i=0; i<32; i++)
+        {
+            printf("r%d = %llx", i, pt_reg->regs[i]);
+            if (((i+1) % 4) == 0)
+                printf("\n");
+            else
+                printf(", ");
+        }
+
+    }
+
+#elif __arm__
 	printf(" Exception instruction: %08x\n", pt_reg->arm_pc); 
 	printf(" Link register: %08x\n", pt_reg->arm_lr);
 	printf(" CPSR register: %08x\n", pt_reg->arm_cpsr);
@@ -52,6 +73,7 @@ void dump_register(struct sigcontext *pt_reg)
 			pt_reg->arm_r8, pt_reg->arm_r9, pt_reg->arm_r10, pt_reg->arm_fp);
 	printf(" ip = %08x, sp = %08x, lr = %08x, pc = %08x\n", 
 			pt_reg->arm_ip, pt_reg->arm_sp, pt_reg->arm_lr, pt_reg->arm_pc);
+#endif
 }
 
 void dump_trace(void *array[], int size)

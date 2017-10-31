@@ -35,11 +35,20 @@ static void exc_myHandle(int signo, siginfo_t *info, void *ptr)
 
 	/* show stack info*/
 	printf("\nStart dumpping stack:\n");
+#if __arm__
 	dump_stackframe(pt_reg->arm_fp);
+#elif __aarch64__
+	dump_stackframe(pt_reg->regs[29]);
+#endif
 
 	/* show function tracking list */
+#if __arm__
 	array[0] = (void*)pt_reg->arm_pc;
 	array[1] = (void*)pt_reg->arm_lr;
+#elif __aarch64__
+	array[0] = (void*)pt_reg->pc;
+	array[1] = (void*)pt_reg->regs[30];
+#endif
 	size = backtrace(array+2, 8);
 	size += 2;
 	dump_trace(array, size);
